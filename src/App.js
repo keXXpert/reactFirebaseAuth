@@ -1,25 +1,38 @@
-import logo from './logo.svg';
-import './App.css';
+import { createContext, useEffect, useState } from 'react';
+import HomePage from './components/HomePage';
+import { auth, generateUserDocument } from './firebase';
+
+export const UserContext = createContext({ user: null })
+
+const UserProvider = ({ children }) => {
+  const [user, setUser] = useState(null)
+
+  useEffect(() => {
+
+    async function getAuthState() {
+      auth.onAuthStateChanged(async userAuth => {
+        const user = await generateUserDocument(userAuth)
+        setUser({ user })
+      })
+    }
+
+    getAuthState()
+
+  }, [])
+
+  return (
+    <UserContext.Provider value={user}>
+      {children}
+    </UserContext.Provider>
+  )
+}
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <UserProvider>
+      <HomePage />
+    </UserProvider>
+  )
 }
 
 export default App;
