@@ -11,15 +11,15 @@ const firebaseConfig = {
     appId: "1:281127548750:web:183bacfae99a758734501f"
 }
 
+firebase.initializeApp(firebaseConfig)
+export const auth = firebase.auth()
+export const firestore = firebase.firestore()
+
 const provider = new firebase.auth.GoogleAuthProvider()
 
 export const signInWithGoogle = () => {
     auth.signInWithPopup(provider)
 }
-
-firebase.initializeApp(firebaseConfig)
-export const auth = firebase.auth()
-export const firestore = firebase.firestore()
 
 export const generateUserDocument = async (user, additionalData) => {
     if (!user) return

@@ -8,15 +8,20 @@ const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null)
 
   useEffect(() => {
+    let reference
 
     async function getAuthState() {
-      auth.onAuthStateChanged(async userAuth => {
+      reference = auth.onAuthStateChanged(async userAuth => {
         const user = await generateUserDocument(userAuth)
-        setUser({ user })
+        setUser(user)
       })
     }
 
     getAuthState()
+
+    return () => {
+      reference()
+    }
 
   }, [])
 

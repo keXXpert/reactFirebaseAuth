@@ -3,7 +3,7 @@ import React, { useContext } from "react"
 import { UserContext } from '../App'
 import { auth } from "../firebase"
 
-const ProfilePage = () => {
+const Profile = () => {
     const user = useContext(UserContext)
     const { photoURL, displayName, email } = user
 
@@ -31,4 +31,4 @@ const ProfilePage = () => {
         </div >
     )
 };
-export default ProfilePage
+export default Profile
